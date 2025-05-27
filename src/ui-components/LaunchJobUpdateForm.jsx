@@ -96,13 +96,13 @@ export default function LaunchJobUpdateForm(props) {
   const validations = {
     id: [{ type: "Required" }],
     notes: [],
-    job_id: [],
-    launch_date: [],
+    job_id: [{ type: "Required" }],
+    launch_date: [{ type: "Required" }],
     termination_date: [],
     consultant_id: [{ type: "Required" }],
     created_at: [],
     updated_at: [],
-    contract_duration: [],
+    contract_duration: [{ type: "Required" }],
     client_pricing: [],
     candidate_pricing: [],
     status: [],
@@ -152,13 +152,13 @@ export default function LaunchJobUpdateForm(props) {
         let modelFields = {
           id,
           notes: notes ?? null,
-          job_id: job_id ?? null,
-          launch_date: launch_date ?? null,
+          job_id,
+          launch_date,
           termination_date: termination_date ?? null,
           consultant_id,
           created_at: created_at ?? null,
           updated_at: updated_at ?? null,
-          contract_duration: contract_duration ?? null,
+          contract_duration,
           client_pricing: client_pricing ?? null,
           candidate_pricing: candidate_pricing ?? null,
           status: status ?? null,
@@ -285,7 +285,7 @@ export default function LaunchJobUpdateForm(props) {
       ></TextField>
       <TextField
         label="Job id"
-        isRequired={false}
+        isRequired={true}
         isReadOnly={false}
         value={job_id}
         onChange={(e) => {
@@ -320,7 +320,7 @@ export default function LaunchJobUpdateForm(props) {
       ></TextField>
       <TextField
         label="Launch date"
-        isRequired={false}
+        isRequired={true}
         isReadOnly={false}
         type="datetime-local"
         value={launch_date && convertToLocal(new Date(launch_date))}
@@ -507,7 +507,7 @@ export default function LaunchJobUpdateForm(props) {
       ></TextField>
       <TextField
         label="Contract duration"
-        isRequired={false}
+        isRequired={true}
         isReadOnly={false}
         type="number"
         step="any"

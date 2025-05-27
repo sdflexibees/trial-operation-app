@@ -74,13 +74,13 @@ export default function LaunchJobCreateForm(props) {
   const validations = {
     id: [{ type: "Required" }],
     notes: [],
-    job_id: [],
-    launch_date: [],
+    job_id: [{ type: "Required" }],
+    launch_date: [{ type: "Required" }],
     termination_date: [],
     consultant_id: [{ type: "Required" }],
     created_at: [],
     updated_at: [],
-    contract_duration: [],
+    contract_duration: [{ type: "Required" }],
     client_pricing: [],
     candidate_pricing: [],
     status: [],
@@ -265,7 +265,7 @@ export default function LaunchJobCreateForm(props) {
       ></TextField>
       <TextField
         label="Job id"
-        isRequired={false}
+        isRequired={true}
         isReadOnly={false}
         value={job_id}
         onChange={(e) => {
@@ -300,7 +300,7 @@ export default function LaunchJobCreateForm(props) {
       ></TextField>
       <TextField
         label="Launch date"
-        isRequired={false}
+        isRequired={true}
         isReadOnly={false}
         type="datetime-local"
         value={launch_date && convertToLocal(new Date(launch_date))}
@@ -487,7 +487,7 @@ export default function LaunchJobCreateForm(props) {
       ></TextField>
       <TextField
         label="Contract duration"
-        isRequired={false}
+        isRequired={true}
         isReadOnly={false}
         type="number"
         step="any"
@@ -654,7 +654,10 @@ export default function LaunchJobCreateForm(props) {
           }}
           {...getOverrideProps(overrides, "ClearButton")}
         ></Button>
-       
+        <Flex
+          gap="15px"
+          {...getOverrideProps(overrides, "RightAlignCTASubFlex")}
+        >
           <Button
             children="Submit"
             type="submit"
@@ -662,7 +665,7 @@ export default function LaunchJobCreateForm(props) {
             isDisabled={Object.values(errors).some((e) => e?.hasError)}
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
-       
+        </Flex>
       </Flex>
     </Grid>
   );
