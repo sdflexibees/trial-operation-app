@@ -32,18 +32,18 @@ function App() {
       </Flex>
     </>
   }
-  function getLaunchs() {
+  function getLaunches() {
     return <>
       <Flex id="Launchs" >
         <Collection items={LaunchJob} type="list" isPaginated={true} isSearchable={true} itemsPerPage={5} column={3} row={5}>
           {(item, index) =>
             <Card key={index} backgroundColor={"inherit"} border={"brown"}>
-              Job Id: <Label children={item.job_id} /> , <br></br>
+              Notes: <Label children={item.notes} /> , <br></br>
               Date of Launch: <Label children={item.launch_date} /> , <br></br>
               Period: <Label children={item.contract_duration} /> , <br></br>
               Client Pricing: <Label children={item.client_pricing} /> , <br></br>
               Candidate Pricing: <Label children={item.candidate_pricing} /> , <br></br>
-              Statis: <Label children={item.status} /> , <br></br>
+              Status: <Label children={item.status} /> , <br></br>
               Comment: <Label children={item.notes} /> <br></br>
               <p />
               <Button onClick={() => updateLaunch(item.id)}>Update</Button>
@@ -72,7 +72,7 @@ function App() {
           <Link children="Signout" onClick={signOut} alignSelf={"end"} />
           <Tabs defaultValue="launchForm" justifyContent={"center"} padding={"large"}
             items={[
-              { label: 'Launch', value: 'launch', content: (getLaunchs()) },
+              { label: 'Launch', value: 'launch', content: (getLaunches()) },
               { label: 'LaunchForm', value: 'launchForm', content: (getForm()) },
             ]}
             isLazy

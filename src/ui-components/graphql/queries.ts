@@ -3,9 +3,10 @@
 // this is an auto generated file. This will be overwritten
 
 export const getLaunchJob = /* GraphQL */ `
-  query GetLaunchJob($id: String!) {
+  query GetLaunchJob($id: ID!) {
     getLaunchJob(id: $id) {
       candidate_pricing
+      client_id
       client_pricing
       consultant_id
       contract_duration
@@ -26,20 +27,13 @@ export const getLaunchJob = /* GraphQL */ `
 export const listLaunchJobs = /* GraphQL */ `
   query ListLaunchJobs(
     $filter: ModelLaunchJobFilterInput
-    $id: String
     $limit: Int
     $nextToken: String
-    $sortDirection: ModelSortDirection
   ) {
-    listLaunchJobs(
-      filter: $filter
-      id: $id
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
+    listLaunchJobs(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         candidate_pricing
+        client_id
         client_pricing
         consultant_id
         contract_duration

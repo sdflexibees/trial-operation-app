@@ -9,6 +9,7 @@ export const createLaunchJob = /* GraphQL */ `
   ) {
     createLaunchJob(condition: $condition, input: $input) {
       candidate_pricing
+      client_id
       client_pricing
       consultant_id
       contract_duration
@@ -33,6 +34,7 @@ export const deleteLaunchJob = /* GraphQL */ `
   ) {
     deleteLaunchJob(condition: $condition, input: $input) {
       candidate_pricing
+      client_id
       client_pricing
       consultant_id
       contract_duration
@@ -57,6 +59,7 @@ export const updateLaunchJob = /* GraphQL */ `
   ) {
     updateLaunchJob(condition: $condition, input: $input) {
       candidate_pricing
+      client_id
       client_pricing
       consultant_id
       contract_duration
