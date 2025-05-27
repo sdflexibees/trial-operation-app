@@ -36,7 +36,7 @@ function App() {
     return <>
       <Flex id="Launches"  >
         
-        <Collection type="grid" items={LaunchJob} justifyContent= "space-between" isPaginated isSearchable  itemsPerPage={15}>
+        <Collection type="grid" items={LaunchJob} justifyContent= "space-between" isPaginated isSearchable  itemsPerPage={5}>
           {(item, index) =>
             <Card key={index} backgroundColor={"inherit"} border={"brown"}>
               Notes: <Label children={item.notes} /> , <br></br>
