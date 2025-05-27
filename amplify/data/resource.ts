@@ -3,7 +3,6 @@ import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 const schema = a.schema({
   LaunchJob: a
     .model({
-      id: a.integer().required(),
       notes: a.string(),
       job_id: a.integer().required(),
       launch_date: a.date().required(),

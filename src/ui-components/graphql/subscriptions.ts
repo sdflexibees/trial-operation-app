@@ -8,6 +8,7 @@ export const onCreateLaunchJob = /* GraphQL */ `
   ) {
     onCreateLaunchJob(filter: $filter) {
       candidate_pricing
+      client_id
       client_pricing
       consultant_id
       contract_duration
@@ -31,6 +32,7 @@ export const onDeleteLaunchJob = /* GraphQL */ `
   ) {
     onDeleteLaunchJob(filter: $filter) {
       candidate_pricing
+      client_id
       client_pricing
       consultant_id
       contract_duration
@@ -54,6 +56,7 @@ export const onUpdateLaunchJob = /* GraphQL */ `
   ) {
     onUpdateLaunchJob(filter: $filter) {
       candidate_pricing
+      client_id
       client_pricing
       consultant_id
       contract_duration

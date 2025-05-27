@@ -18,7 +18,6 @@ export default function LaunchJobCreateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    id: "",
     notes: "",
     job_id: "",
     launch_date: "",
@@ -26,12 +25,12 @@ export default function LaunchJobCreateForm(props) {
     consultant_id: "",
     created_at: "",
     updated_at: "",
+    client_id: "",
     contract_duration: "",
     client_pricing: "",
     candidate_pricing: "",
     status: "",
   };
-  const [id, setId] = React.useState(initialValues.id);
   const [notes, setNotes] = React.useState(initialValues.notes);
   const [job_id, setJob_id] = React.useState(initialValues.job_id);
   const [launch_date, setLaunch_date] = React.useState(
@@ -45,6 +44,7 @@ export default function LaunchJobCreateForm(props) {
   );
   const [created_at, setCreated_at] = React.useState(initialValues.created_at);
   const [updated_at, setUpdated_at] = React.useState(initialValues.updated_at);
+  const [client_id, setClient_id] = React.useState(initialValues.client_id);
   const [contract_duration, setContract_duration] = React.useState(
     initialValues.contract_duration
   );
@@ -57,7 +57,6 @@ export default function LaunchJobCreateForm(props) {
   const [status, setStatus] = React.useState(initialValues.status);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    setId(initialValues.id);
     setNotes(initialValues.notes);
     setJob_id(initialValues.job_id);
     setLaunch_date(initialValues.launch_date);
@@ -65,6 +64,7 @@ export default function LaunchJobCreateForm(props) {
     setConsultant_id(initialValues.consultant_id);
     setCreated_at(initialValues.created_at);
     setUpdated_at(initialValues.updated_at);
+    setClient_id(initialValues.client_id);
     setContract_duration(initialValues.contract_duration);
     setClient_pricing(initialValues.client_pricing);
     setCandidate_pricing(initialValues.candidate_pricing);
@@ -72,7 +72,6 @@ export default function LaunchJobCreateForm(props) {
     setErrors({});
   };
   const validations = {
-    id: [{ type: "Required" }],
     notes: [],
     job_id: [{ type: "Required" }],
     launch_date: [{ type: "Required" }],
@@ -80,6 +79,7 @@ export default function LaunchJobCreateForm(props) {
     consultant_id: [{ type: "Required" }],
     created_at: [],
     updated_at: [],
+    client_id: [{ type: "Required" }],
     contract_duration: [{ type: "Required" }],
     client_pricing: [],
     candidate_pricing: [],
@@ -102,23 +102,6 @@ export default function LaunchJobCreateForm(props) {
     setErrors((errors) => ({ ...errors, [fieldName]: validationResponse }));
     return validationResponse;
   };
-  const convertToLocal = (date) => {
-    const df = new Intl.DateTimeFormat("default", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      calendar: "iso8601",
-      numberingSystem: "latn",
-      hourCycle: "h23",
-    });
-    const parts = df.formatToParts(date).reduce((acc, part) => {
-      acc[part.type] = part.value;
-      return acc;
-    }, {});
-    return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}`;
-  };
   return (
     <Grid
       as="form"
@@ -128,7 +111,6 @@ export default function LaunchJobCreateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          id,
           notes,
           job_id,
           launch_date,
@@ -136,6 +118,7 @@ export default function LaunchJobCreateForm(props) {
           consultant_id,
           created_at,
           updated_at,
+          client_id,
           contract_duration,
           client_pricing,
           candidate_pricing,
@@ -194,41 +177,6 @@ export default function LaunchJobCreateForm(props) {
       {...rest}
     >
       <TextField
-        label="Id"
-        isRequired={true}
-        isReadOnly={false}
-        value={id}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              id: value,
-              notes,
-              job_id,
-              launch_date,
-              termination_date,
-              consultant_id,
-              created_at,
-              updated_at,
-              contract_duration,
-              client_pricing,
-              candidate_pricing,
-              status,
-            };
-            const result = onChange(modelFields);
-            value = result?.id ?? value;
-          }
-          if (errors.id?.hasError) {
-            runValidationTasks("id", value);
-          }
-          setId(value);
-        }}
-        onBlur={() => runValidationTasks("id", id)}
-        errorMessage={errors.id?.errorMessage}
-        hasError={errors.id?.hasError}
-        {...getOverrideProps(overrides, "id")}
-      ></TextField>
-      <TextField
         label="Notes"
         isRequired={false}
         isReadOnly={false}
@@ -237,7 +185,6 @@ export default function LaunchJobCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              id,
               notes: value,
               job_id,
               launch_date,
@@ -245,6 +192,7 @@ export default function LaunchJobCreateForm(props) {
               consultant_id,
               created_at,
               updated_at,
+              client_id,
               contract_duration,
               client_pricing,
               candidate_pricing,
@@ -267,12 +215,15 @@ export default function LaunchJobCreateForm(props) {
         label="Job id"
         isRequired={true}
         isReadOnly={false}
+        type="number"
+        step="any"
         value={job_id}
         onChange={(e) => {
-          let { value } = e.target;
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
-              id,
               notes,
               job_id: value,
               launch_date,
@@ -280,6 +231,7 @@ export default function LaunchJobCreateForm(props) {
               consultant_id,
               created_at,
               updated_at,
+              client_id,
               contract_duration,
               client_pricing,
               candidate_pricing,
@@ -302,14 +254,12 @@ export default function LaunchJobCreateForm(props) {
         label="Launch date"
         isRequired={true}
         isReadOnly={false}
-        type="datetime-local"
-        value={launch_date && convertToLocal(new Date(launch_date))}
+        type="date"
+        value={launch_date}
         onChange={(e) => {
-          let value =
-            e.target.value === "" ? "" : new Date(e.target.value).toISOString();
+          let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              id,
               notes,
               job_id,
               launch_date: value,
@@ -317,6 +267,7 @@ export default function LaunchJobCreateForm(props) {
               consultant_id,
               created_at,
               updated_at,
+              client_id,
               contract_duration,
               client_pricing,
               candidate_pricing,
@@ -339,14 +290,12 @@ export default function LaunchJobCreateForm(props) {
         label="Termination date"
         isRequired={false}
         isReadOnly={false}
-        type="datetime-local"
-        value={termination_date && convertToLocal(new Date(termination_date))}
+        type="date"
+        value={termination_date}
         onChange={(e) => {
-          let value =
-            e.target.value === "" ? "" : new Date(e.target.value).toISOString();
+          let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              id,
               notes,
               job_id,
               launch_date,
@@ -354,6 +303,7 @@ export default function LaunchJobCreateForm(props) {
               consultant_id,
               created_at,
               updated_at,
+              client_id,
               contract_duration,
               client_pricing,
               candidate_pricing,
@@ -385,7 +335,6 @@ export default function LaunchJobCreateForm(props) {
             : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
-              id,
               notes,
               job_id,
               launch_date,
@@ -393,6 +342,7 @@ export default function LaunchJobCreateForm(props) {
               consultant_id: value,
               created_at,
               updated_at,
+              client_id,
               contract_duration,
               client_pricing,
               candidate_pricing,
@@ -415,14 +365,12 @@ export default function LaunchJobCreateForm(props) {
         label="Created at"
         isRequired={false}
         isReadOnly={false}
-        type="datetime-local"
-        value={created_at && convertToLocal(new Date(created_at))}
+        type="date"
+        value={created_at}
         onChange={(e) => {
-          let value =
-            e.target.value === "" ? "" : new Date(e.target.value).toISOString();
+          let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              id,
               notes,
               job_id,
               launch_date,
@@ -430,6 +378,7 @@ export default function LaunchJobCreateForm(props) {
               consultant_id,
               created_at: value,
               updated_at,
+              client_id,
               contract_duration,
               client_pricing,
               candidate_pricing,
@@ -452,14 +401,12 @@ export default function LaunchJobCreateForm(props) {
         label="Updated at"
         isRequired={false}
         isReadOnly={false}
-        type="datetime-local"
-        value={updated_at && convertToLocal(new Date(updated_at))}
+        type="date"
+        value={updated_at}
         onChange={(e) => {
-          let value =
-            e.target.value === "" ? "" : new Date(e.target.value).toISOString();
+          let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              id,
               notes,
               job_id,
               launch_date,
@@ -467,6 +414,7 @@ export default function LaunchJobCreateForm(props) {
               consultant_id,
               created_at,
               updated_at: value,
+              client_id,
               contract_duration,
               client_pricing,
               candidate_pricing,
@@ -486,6 +434,41 @@ export default function LaunchJobCreateForm(props) {
         {...getOverrideProps(overrides, "updated_at")}
       ></TextField>
       <TextField
+        label="Client id"
+        isRequired={true}
+        isReadOnly={false}
+        value={client_id}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              notes,
+              job_id,
+              launch_date,
+              termination_date,
+              consultant_id,
+              created_at,
+              updated_at,
+              client_id: value,
+              contract_duration,
+              client_pricing,
+              candidate_pricing,
+              status,
+            };
+            const result = onChange(modelFields);
+            value = result?.client_id ?? value;
+          }
+          if (errors.client_id?.hasError) {
+            runValidationTasks("client_id", value);
+          }
+          setClient_id(value);
+        }}
+        onBlur={() => runValidationTasks("client_id", client_id)}
+        errorMessage={errors.client_id?.errorMessage}
+        hasError={errors.client_id?.hasError}
+        {...getOverrideProps(overrides, "client_id")}
+      ></TextField>
+      <TextField
         label="Contract duration"
         isRequired={true}
         isReadOnly={false}
@@ -498,7 +481,6 @@ export default function LaunchJobCreateForm(props) {
             : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
-              id,
               notes,
               job_id,
               launch_date,
@@ -506,6 +488,7 @@ export default function LaunchJobCreateForm(props) {
               consultant_id,
               created_at,
               updated_at,
+              client_id,
               contract_duration: value,
               client_pricing,
               candidate_pricing,
@@ -539,7 +522,6 @@ export default function LaunchJobCreateForm(props) {
             : parseFloat(e.target.value);
           if (onChange) {
             const modelFields = {
-              id,
               notes,
               job_id,
               launch_date,
@@ -547,6 +529,7 @@ export default function LaunchJobCreateForm(props) {
               consultant_id,
               created_at,
               updated_at,
+              client_id,
               contract_duration,
               client_pricing: value,
               candidate_pricing,
@@ -578,7 +561,6 @@ export default function LaunchJobCreateForm(props) {
             : parseFloat(e.target.value);
           if (onChange) {
             const modelFields = {
-              id,
               notes,
               job_id,
               launch_date,
@@ -586,6 +568,7 @@ export default function LaunchJobCreateForm(props) {
               consultant_id,
               created_at,
               updated_at,
+              client_id,
               contract_duration,
               client_pricing,
               candidate_pricing: value,
@@ -615,7 +598,6 @@ export default function LaunchJobCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              id,
               notes,
               job_id,
               launch_date,
@@ -623,6 +605,7 @@ export default function LaunchJobCreateForm(props) {
               consultant_id,
               created_at,
               updated_at,
+              client_id,
               contract_duration,
               client_pricing,
               candidate_pricing,
@@ -654,10 +637,7 @@ export default function LaunchJobCreateForm(props) {
           }}
           {...getOverrideProps(overrides, "ClearButton")}
         ></Button>
-        <Flex
-          gap="15px"
-          {...getOverrideProps(overrides, "RightAlignCTASubFlex")}
-        >
+        
           <Button
             children="Submit"
             type="submit"
@@ -665,7 +645,6 @@ export default function LaunchJobCreateForm(props) {
             isDisabled={Object.values(errors).some((e) => e?.hasError)}
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
-        </Flex>
       </Flex>
     </Grid>
   );
