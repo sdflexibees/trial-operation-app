@@ -34,7 +34,7 @@ function App() {
   }
   function getLaunchs() {
     return <>
-      <Flex id="Launchs"  >
+      <Flex id="Launchs" >
         <Collection items={LaunchJob} type="list" isPaginated={true} isSearchable={true} itemsPerPage={5} column={3} row={5}>
           {(item, index) =>
             <Card key={index} backgroundColor={"inherit"} border={"brown"}>
@@ -62,24 +62,26 @@ function App() {
   }
   return (
 
-    <Flex padding={"medium"} >
-      <Authenticator>
-        {({ signOut }) => (
-          <main>
-            <Heading level={1} children="Launchs" alignSelf={"center"}></Heading>
+    <Authenticator>
 
-            <Link children="Signout" onClick={signOut} alignSelf={"end"} />
-            <Tabs defaultValue="launchForm" justifyContent={"center"} padding={"large"}
-              items={[
-                { label: 'Launch', value: 'launch', content: (getLaunchs()) },
-                { label: 'LaunchForm', value: 'launchForm', content: (getForm()) },
-              ]}
-              isLazy
-            />
+      {({ signOut }) => (
+        <main>
+
+          <Heading level={1} children="Launches" alignSelf={"center"}></Heading>
+
+          <Link children="Signout" onClick={signOut} alignSelf={"end"} />
+          <Tabs defaultValue="launchForm" justifyContent={"center"} padding={"large"}
+            items={[
+              { label: 'Launch', value: 'launch', content: (getLaunchs()) },
+              { label: 'LaunchForm', value: 'launchForm', content: (getForm()) },
+            ]}
+            isLazy
+          />
           </main>
-        )}
-      </Authenticator>
-    </Flex>
+  )
+}
+      </Authenticator >
+    
 
   );
 }
