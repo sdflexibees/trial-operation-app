@@ -34,8 +34,10 @@ function App() {
   }
   function getLaunches() {
     return <>
-      <Flex id="Launchs" >
-        <Collection items={LaunchJob} type="list" isPaginated={true} isSearchable={true} itemsPerPage={5} column={3} row={5}>
+      <Flex id="Launches"  >
+        
+        <Collection type="grid" items={LaunchJob} direction="row" justifyContent= "space-between" 
+        wrap = "wrap" isPaginated isSearchable  itemsPerPage={15}>
           {(item, index) =>
             <Card key={index} backgroundColor={"inherit"} border={"brown"}>
               Notes: <Label children={item.notes} /> , <br></br>
