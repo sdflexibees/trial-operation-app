@@ -73,8 +73,8 @@ function App() {
           <Link children="Signout" onClick={signOut} alignSelf={"end"} />
           <Tabs defaultValue="launchForm" justifyContent={"center"} padding={"large"}
             items={[
-              { label: 'Launch', value: 'launch', content: (getLaunches()) },
-              { label: 'LaunchForm', value: 'launchForm', content: (getForm()) },
+              { label: 'Launches...', value: 'launch', content: (getLaunches()) },
+              { label: 'Launch Form', value: 'launchForm', content: (getForm()) },
             ]}
             isLazy
           />
