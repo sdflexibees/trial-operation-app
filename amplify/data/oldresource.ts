@@ -1,11 +1,5 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
-import { schema as generatedSqlSchema } from './schema.sql';
-
-
-// Add a global authorization rule
-const sqlSchema = generatedSqlSchema.authorization(allow => allow.guest())
-
 const schema = a.schema({
   LaunchJob: a
     .model({
@@ -25,13 +19,10 @@ const schema = a.schema({
     .authorization((allow) => [allow.publicApiKey()]),
 });
 
-const combinedSchema = a.combine([schema, sqlSchema]);
-export type Schema = ClientSchema<typeof combinedSchema>;
-
-// export type Schema = ClientSchema<typeof schema>;
+export type Schema = ClientSchema<typeof schema>;
 
 export const data = defineData({
-  schema: combinedSchema,
+  schema,
   authorizationModes: {
     defaultAuthorizationMode: "apiKey",
     // API Key is used for a.allow.public() rules
